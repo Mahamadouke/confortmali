@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Votre Panier</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+
+
+    
+
+
+
+<div class="container mt-5">
+    <h1>Votre Panier</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart.items.all %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.total_price }} XOF</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Prix Total: {{ total_price }} XOF</h3>
+    <a class="btn btn-primary" href="{% url 'checkout' %}">Valider le Panier</a>
+</div>
+</body>
+</html>

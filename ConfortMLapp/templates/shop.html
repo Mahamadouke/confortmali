@@ -1,0 +1,226 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Untree.co">
+  <link rel="shortcut icon" href="{% static 'images/cm.png' %}">
+  <meta name="description" content="" />
+  <meta name="keywords" content="bootstrap, bootstrap4" />
+
+  <title>Confort Mali</title>
+
+  <!-- CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/tiny-slider.css' %}" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel='stylesheet'>
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <link href="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css' %}" rel="stylesheet">
+  <style>
+    body {
+      overflow-x: hidden;
+      position: relative;
+      font-family: "Inter", sans-serif;
+      font-weight: 400;
+      line-height: 28px;
+      color: #6a6a6a;
+      font-size: 14px;
+      background-color: #eff2f1;
+    }
+    .categories {
+      text-align: center;
+    }
+    .categories a {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 30px;
+      font-size: 18px;
+      transition: all 0.3s ease-in-out;
+    }
+    .categories a:hover {
+      background-color: #0472df;
+      color: white;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="{% static 'images/cm.png' %}" alt="Logo Confort Mali">
+      </a>
+      <!-- Toggle Button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- Navigation Links -->
+      <div class="collapse navbar-collapse" id="navbarsFurni">
+        <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Accueil</a></li>
+          <li class="nav-item active"><a class="nav-link" href="{% url 'shop' %}">Produits</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">À propos</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'services' %}">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+        <!-- CTA Links -->
+        <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+          {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{% static 'images/user.svg' %}" alt="Utilisateur">
+                {{ user.username }}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="#">{{ user.username }}</a></li>
+                <li><a class="dropdown-item" href="#">{{ user.email }}</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Déconnexion</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">
+                <img src="{% static 'images/user.svg' %}" alt="Connexion">
+              </a>
+            </li>
+          {% endif %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'view_cart' %}">
+                          <img src="{% static 'images/cart.svg' %}" alt="Panier">
+                      </a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- End Navigation -->
+
+  <!-- Hero Section -->
+  <div class="hero" style="padding-top: 20px; padding-bottom: 20px;">
+    <div class="container">
+      <div class="row justify-content-between">
+        <div class="col-lg-5">
+          <div class="intro-excerpt">
+            <h1>Nos catégories</h1>
+          </div>
+        </div>
+        <div class="col-lg-7"></div>
+      </div>
+    </div>
+  </div>
+  <!-- End Hero Section -->
+
+  <!-- Product Section -->
+  <div class="untree_co-section product-section before-footer-section" style="padding-top: -23px;">
+    <div class="container">
+      <div class="row">
+        <!-- Categories -->
+        <div class="col-12">
+          <div class="categories" style="margin-top: -33px;">
+            {% for category in categories %}
+              <a href="{% url 'shop_categorie' category.id %}" class="btn btn-outline-dark">{{ category.nom }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Product Section -->
+
+  <!-- Footer Section -->
+  <footer class="footer-section">
+    <div class="container relative">
+      <div class="row g-5 mb-5">
+        <div class="col-lg-4">
+          <div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Confort Mali<span>.</span></a></div>
+          <p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant.</p>
+
+          <ul class="list-unstyled custom-social">
+            <li><a href="#"><i class='bx bxl-facebook-circle'></i></a></li>
+            <li><a href="#"><i class='bx bxl-twitter'></i></a></li>
+            <li><a href="#"><i class='bx bxl-instagram-alt'></i></a></li>
+            <li><a href="#"><i class='bx bxl-linkedin'></i></a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="row links-wrap">
+            <div class="col-6 col-sm-6 col-md-3">
+              <ul class="list-unstyled">
+                <li><a href="{% url 'about' %}">À propos</a></li>
+                <li><a href="{% url 'services' %}">Nos Services</a></li>
+                <li><a href="{% url 'blog' %}">Blog</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+              </ul>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="border-top copyright">
+        <div class="row pt-4">
+          <div class="col-lg-6">
+            <p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; <a href="https://ConfortMali.com">www.ConfortMali.com</a> Distributed By <a href="https://www.ConfortMali.com">Confort Mali</a></p>
+          </div>
+          <div class="col-lg-6 text-center text-lg-end">
+            <ul class="list-unstyled d-inline-flex ms-auto">
+              <li class="me-4"><a href="#">Termes &amp; Conditions</a></li>
+              <li><a href="#">Politique de confidentialité</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- End Footer Section -->
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+		<script src="{% static 'js/tiny-slider.js' %}"></script>
+		<script src="{% static 'js/custom.js' %}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const buttons = document.querySelectorAll('.categories a');
+      
+      buttons.forEach(button => {
+        button.addEventListener('mouseover', function() {
+          button.style.transform = 'scale(1.1)';
+        });
+
+        button.addEventListener('mouseout', function() {
+          button.style.transform = 'scale(1)';
+        });
+      });
+    });
+  </script>
+  <script>
+    // Fonction pour mettre à jour le compteur du panier
+    function updateCartCount(count) {
+        var cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) {
+            cartCountElement.textContent = count;
+        }
+    }
+
+    // Simulation d'un ajout au panier (à remplacer par votre logique réelle)
+    function addToCart() {
+        // Ici, vous devez mettre votre logique pour ajouter un produit au panier
+        // Après avoir ajouté un produit, appelez cette fonction pour mettre à jour le compteur
+        var currentCount = parseInt(document.getElementById('cart-count').textContent);
+        updateCartCount(currentCount + 1); // Incrémente le compteur de 1
+    }
+
+    // Exemple d'appel à addToCart() (simuler un ajout au panier)
+    // addToCart(); // Décommentez pour tester l'incrémentation
+</script>
+
+</body>
+</html>

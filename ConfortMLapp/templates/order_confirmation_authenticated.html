@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ConfortMali - Confirmation de Commande</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+    
+<div class="container mt-5">
+    <h1>Confirmation de Commande</h1>
+    {% for order in orders %}
+    <div class="order-details mt-4 p-4 bg-light border rounded">
+        <p>Merci, {{ order.customer_name }}! Votre commande pour {{ order.shop.name }} a été confirmée.</p>
+        <p>Quantité: {{ order.quantity }}</p>
+        <p>Prix Total: {{ order.total_price }} FCFA</p>
+        {% if order.invoice_pdf %}
+        <p><a href="{{ order.invoice_pdf.url }}" target="_blank" class="btn btn-primary mt-3">Télécharger votre facture</a></p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <a href="{% url 'index' %}" class="btn btn-primary mt-3">Accueil</a>
+</div>
+
+
+</body>
+</html>

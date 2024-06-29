@@ -1,0 +1,227 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Untree.co">
+  <link rel="shortcut icon" href="{% static 'images/cm.png' %}">
+  <meta name="description" content="" />
+  <meta name="keywords" content="bootstrap, bootstrap4" />
+
+  <title>Confort Mali</title>
+
+  <!-- CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <link href="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css' %}" rel="stylesheet">
+  <style>
+    .cart-table th, .cart-table td {
+      padding: 15px;
+      text-align: center;
+    }
+    .cart-table img {
+      width: 80px;
+      height: auto;
+    }
+    .btn {
+      margin: 0 5px;
+    }
+    @media (max-width: 768px) {
+      .cart-table th, .cart-table td {
+        padding: 10px;
+      }
+      .cart-table img {
+        width: 60px;
+      }
+      .btn {
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+      h3 {
+        font-size: 18px;
+      }
+    }
+    .container {
+      margin-top: 30px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-control {
+      border-radius: 4px;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+
+    <!-- Start Header/Navigation -->
+		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+
+			<div class="container">
+				<a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'images/cm.png' %}"></a>
+
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarsFurni">
+					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+						<li>
+							<a class="nav-link" href="{% url 'index' %}">Accueil</a>
+						</li>
+						<li><a class="nav-link" href="{% url 'shop' %}">Produits</a></li>
+						<li><a class="nav-link" href="{% url 'about' %}">A propos</a></li>
+						<li><a class="nav-link" href="{% url 'services' %}">Services</a></li>
+						<li><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+						<li><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+					</ul>
+
+          <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+            {% if user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="{% static 'images/user.svg' %}" alt="Utilisateur">
+                  {{ user.username }}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                  <li><a class="dropdown-item" href="#">{{ user.username }}</a></li>
+                  <li><a class="dropdown-item" href="#">{{ user.email }}</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Déconnexion</a></li>
+                </ul>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">
+                  <img src="{% static 'images/user.svg' %}" alt="Connexion">
+                </a>
+              </li>
+            {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-item active" href="{% url 'view_cart' %}">
+                            <img src="{% static 'images/cart.svg' %}" alt="Panier">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+		<!-- End Header/Navigation -->
+
+
+
+  <div class="container">
+    <h2 class="text-center">Votre Panier</h2>
+    <table class="table cart-table">
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Quantité</th>
+          <th>Prix</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart_items %}
+        <tr>
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.product.price }} XOF</td>
+          <td>{{ item.total_price }} XOF</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <h3 class="text-right">Total: {{ total_price }} XOF</h3>
+    <form method="post" action="{% url 'checkout' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="customer_phone">Numéro de Téléphone :</label>
+        <input type="tel" id="customer_phone" name="customer_phone" required class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="customer_address">Adresse :</label>
+        <textarea id="customer_address" name="customer_address" rows="3" required class="form-control"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Commander</button>
+    </form>
+  </div>
+<br>
+
+
+
+      <!-- Start Footer Section -->
+      <footer class="footer-section">
+        <div class="container relative">
+            <div class="row g-5 mb-5">
+                <div class="col-lg-4">
+                    <div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Confort Mali<span>.</span></a></div>
+                    <p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
+
+                    <ul class="list-unstyled custom-social">
+                        <li><a href="#"><i class='bx bxl-facebook-circle'></i></a></li>
+                        <li><a href="#"><i class='bx bxl-twitter'></i></a></li>
+                        <li><a href="#"><i class='bx bxl-instagram-alt'></i></a></li>
+                        <li><a href="#"><i class='bx bxl-linkedin'></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="row links-wrap">
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="{% url 'about' %}">A propos</a></li>
+                                <li><a href="{% url 'services' %}">Nos Services</a></li>
+                                <li><a href="{% url 'blog' %}">Blog</a></li>
+                                <li><a href="{% url 'contact' %}">Contact</a></li>
+                            </ul>
+                        </div>
+
+                        
+
+                       
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-top copyright">
+                <div class="row pt-4">
+                    <div class="col-lg-6">
+                        <p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash;  <a href="https://untree.co">www.ConfortMali.com</a> Distributed By <a hreff="https://www.ConfortMali.com">Confort Mali</a>  <!-- License information: https://untree.co/license/ -->
+        </p>
+                    </div>
+
+                    <div class="col-lg-6 text-center text-lg-end">
+                        <ul class="list-unstyled d-inline-flex ms-auto">
+                            <li class="me-4"><a href="#">Termes &amp; Conditions</a></li>
+                            <li><a href="#">Politique de confidentialité</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <!-- End Footer Section -->	
+
+  <!-- Scripts -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
